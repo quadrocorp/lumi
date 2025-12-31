@@ -6,7 +6,7 @@ function ButtonOuter({
     children="Button",
     iconFirst=true
 }) {
-    const button = <button className="p-3.5 backdrop-opacity-50 mix-blend-overlay backdrop-blur-2xl flex flex-row gap-1 justify-center items-center bg-linear-to-tr from-gray-900 to-gray-300" onClick={onClick}>
+    const button = <button className="p-5 rounded-3xl text-lg font-medium justify-center items-center shadow-idle backdrop-blur-md flex flex-row gap-2 text-white border-t-2 border-t-neutral-50" onClick={onClick}>
         <p>{children}</p>
         <Circle size={23}/>
     </button>;

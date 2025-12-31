@@ -4,7 +4,6 @@ import ButtonOuter from "./components/ButtonOuter"
 function App() {
     return (
         <div className="w-full h-screen flex items-center justify-center">
-            <ButtonOuter />
         </div>
     )
 }
