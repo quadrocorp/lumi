@@ -1,6 +1,303 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+/* @import "tailwindcss"; */
 
-* {
-    font-family: "Inter", sans-serif;
+:root {
+	--button-padding: 15px;
+	--button-size: 40px;
+	--glass-bg: rgba(255, 255, 255, 0.025);
+	--glass-border: rgba(255, 255, 255, 0.2);
+	--circle-size: 25px;
+}
+
+/* Base Styles & Reset */
+*, body {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Outfit", sans-serif;
+}
+
+body {
+	background: url(assets/bg.png) center;
+	background-size: cover;
+}
+
+body, #root {
+	height: 100vh;
+	width: 100%;
+}
+
+#root {
+	padding: 5vh calc(1/9 * 100%);
+}
+
+/* Borderless Button Component */
+.borderless-btn {
+	position: relative;
+	height: var(--button-size);
+	padding: 0 var(--button-padding);
+	width: fit-content;
+	color: white;
+	background-color: transparent;
+	border: 0;
+	cursor: pointer;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	scale: 1;
+	transition: all 0.25s cubic-bezier(1, 0, 0, 1);
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	isolation: isolate; /* Creates a new stacking context */
+	* {
+		transition: all 0.25s cubic-bezier(0.86, 0, 0.07, 1);
+	}
+}
+
+/* Glass Block Component */
+.glass-block {
+	position: relative;
+	background: transparent;
+	border: 0;
+	border-top: 1px solid var(--glass-border);
+	color: white;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	scale: 1;
+	transition: all 0.25s cubic-bezier(1, 0, 0, 1);
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	isolation: isolate; /* Creates a new stacking context */
+	* {
+		transition: all 0.25s cubic-bezier(0.86, 0, 0.07, 1);
+	}
+}
+
+/* Glass Button Component */
+.glass-btn {
+	position: relative;
+	height: var(--button-size);
+	padding: 17px;
+	width: fit-content;
+	background: transparent;
+	border: 0;
+	border-top: 1px solid var(--glass-border);
+	border-radius: 50px;
+	color: white;
+	cursor: pointer;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	scale: 1;
+	transition: all 0.25s cubic-bezier(1, 0, 0, 1);
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	isolation: isolate; /* Creates a new stacking context */
+	* {
+		transition: all 0.25s cubic-bezier(0.86, 0, 0.07, 1);
+	}
+}
+
+/* Glass Effect Layer */
+.glass-effect {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	backdrop-filter: blur(10px); /* Creates the frosted glass effect */
+	-webkit-backdrop-filter: blur(10px);
+	background: var(--glass-bg);
+	z-index: 1;
+}
+
+.glass-effect::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-image: url(assets/WhiteNoiseDithering.png);
+	opacity: 10%;
+	background-size: 150px;
+	pointer-events: none;
+	z-index: 1;
+}
+
+/* Button Content Layer */
+.button-content {
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	svg {
+		stroke-width: 2px;
+	}
+}
+
+/* Block Content Layer */
+.block-content {
+	position: relative;
+	width: max-content;
+	height: max-content;
+	z-index: 2;
+}
+
+/* Mouse Follow Circle System */
+.mouse-follow-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	z-index: 0;
+	clip-path: inset(0 round 16px); /* Ensures circle stays within button bounds */
+}
+
+.mouse-follow-circle {
+	position: absolute;
+	width: var(--circle-size);
+	height: var(--circle-size);
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.496);
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+	filter: blur(5px);
+	opacity: 0;
+	transition: filter 0.25s ease, height 0.25s ease, width 0.25s ease, opacity 0.25s ease;
+}
+
+.mouse-follow-circle-bigger {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.496);
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+	filter: blur(50px);
+	opacity: 0;
+	transition: filter 0.25s ease, height 0.25s ease, width 0.25s ease, opacity 0.25s ease, scale 0.25s ease;
+}
+
+/* Button States */
+.glass-btn:hover {
+	border-color: rgba(255, 255, 255, 0.3);
+	background: hwb(0 42% 58% / 0.035);
+}
+
+.glass-btn:hover .mouse-follow-circle {
+	opacity: 1;
+}
+
+.glass-btn:active {
+	background: rgba(255, 255, 255, 0.236);
+}
+
+.glass-btn:active .mouse-follow-circle {
+	height: 50px;
+	width: 50px;
+	filter: blur(20px);
+	background: #ffffffb5;
+}
+
+/* Block States */
+.glass-block:active .mouse-follow-circle {
+	height: 50px;
+	width: 50px;
+	filter: blur(20px);
+	background: #ffffffb5;
+}
+
+.glass-block:hover {
+	border-color: rgba(255, 255, 255, 0.093);
+	background: #ffffff21;
+}
+
+/* Utility Classes */
+.glass-btn-clicked {
+	scale: 0.95;
+}
+
+.borderless-btn-clicked {
+	scale: 0.8;
+}
+
+.glass-block-clicked .mouse-follow-container .mouse-follow-circle-bigger {
+	scale: 1.5;
+}
+
+/* Static Block Styles */
+
+.block-label {
+	border-radius: 60px;
+	padding: 10px 20px;
+	user-select: none;
+	.block-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+	}
+}
+
+.label-button-holder {
+	width: fit-content;
+	height: fit-content;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+}
+
+.block-label-text-label {
+	font-size: large;
+}
+
+.block-label-text-holder {
+	span {
+		display: block;
+	}
+}
+
+.block-label-text-subtext {
+	font-size: small;
+	opacity: 50%;
+	* {
+		font-size: inherit;
+	}
+}
+
+.bold {
+	font-weight: 600;
+}
+
+.italic {
+	margin-left: 5px;
+	font-weight: 100;
+	font-style: italic;
+}
+
+.button-block {
+	border-radius: 60px;
+	.block-content {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 2px;
+		padding: 9px 7px;
+	}
+}
+
+.navigation-panel {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }

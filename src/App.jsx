@@ -1,11 +1,21 @@
-import Blind from "./components/Blind"
-import ButtonOuter from "./components/ButtonOuter"
+import Block, { BlockLabel, ButtonBlock } from "./components/Block";
+import Button from "./components/Button";
+import ButtonBorderless from "./components/ButtonBorderless";
+import { BotIcon, ChartArea, LogOut, Menu, Server, Settings2, User2 } from "lucide-react";
 
-function App() {
-    return (
-        <div className="w-full h-screen flex items-center justify-center">
-        </div>
-    )
-}
+const App = () => {
+  return (
+    <div className="navigation-panel">
+      <div className="label-button-holder">
+        <Button icon={Menu} />
+        <BlockLabel first="Lumi:" second="Photon" sub="v1.0-alpha" iconFirst={true} icon={Server}/>
+      </div>
+      <div className="label-button-holder">
+        <BlockLabel first="Nick" second="Tsupko" sub="System Administrator" iconFirst={false} icon={User2}/>
+        <ButtonBlock Buttons={[Settings2, LogOut]}/>
+      </div>
+    </div>
+  )
+};
 
-export default App
+export default App;
