@@ -1,6 +1,4 @@
 import {useEffect, useRef, useState} from "react";
-import { Rose } from "lucide-react";
-import ButtonBorderless from "./ButtonBorderless";
 
 function Block({
     className,
@@ -134,16 +132,4 @@ export const BlockLabel = ({first, second, sub, iconFirst, icon: Icon}) => {
         </Block>
     )
     }
-}
-
-export const ButtonBlock = ({Buttons}) => {
-    return (
-        <Block className="button-block" biggerCircle={false}>
-        {
-            Buttons.map((b, i) => {
-                return <ButtonBorderless key={i} icon={b} />
-            })
-        }
-        </Block>
-    )
 }

@@ -1,6 +1,5 @@
-import Block, { BlockLabel, ButtonBlock } from "./components/Block";
+import Block, { BlockLabel } from "./components/Block";
 import Button from "./components/Button";
-import ButtonBorderless from "./components/ButtonBorderless";
 import { BotIcon, ChartArea, LogOut, Menu, Server, Settings2, User2 } from "lucide-react";
 
 const App = () => {
@@ -8,11 +7,13 @@ const App = () => {
     <div className="navigation-panel">
       <div className="label-button-holder">
         <Button icon={Menu} />
-        <BlockLabel first="Lumi:" second="Photon" sub="v1.0-alpha" iconFirst={true} icon={Server}/>
+        {/*<BlockLabel first="Lumi:" second="Photon" sub="v1.0-alpha" iconFirst={true} icon={Server}/>*/}
+          <Button icon={BotIcon}></Button>
       </div>
       <div className="label-button-holder">
         <BlockLabel first="Nick" second="Tsupko" sub="System Administrator" iconFirst={false} icon={User2}/>
-        <ButtonBlock Buttons={[Settings2, LogOut]}/>
+        <Button icon={Settings2} />
+          <Button icon={LogOut}/>
       </div>
     </div>
   )
