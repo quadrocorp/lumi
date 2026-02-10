@@ -1,0 +1,28 @@
+
+
+
+
+// Stored away in comments as of ADR Note #2
+
+// import { useState } from "react";
+
+// function Bot ({name, id, trackersDocker, trackersSpark, uptime, total, dockerHook, setContainerList}) {
+//     const [state, setState] = useState(false)
+//
+// }
+//
+// function BotSpark({
+//     name,
+//     id,
+//     trackersDocker,
+//     trackersForge,
+//     uptime,
+//     totalMsgs,
+//     setContainerList
+// }) {
+//     return (
+//         <div>
+//
+//         </div>
+//     )
+// }

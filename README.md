@@ -1,76 +1,73 @@
-# Lumi Frontend
+# React + TypeScript + Vite
 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![React](https://img.shields.io/badge/React-18%2B-blue.svg)](https://reactjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5%2B-blue.svg)](https://www.typescriptlang.org)
-[![Vite](https://img.shields.io/badge/Vite-5%2B-purple.svg)](https://vitejs.dev)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-The React frontend for the Lumi Telegram bot management platform. Built with modern React patterns, TypeScript, and featuring the custom LumiKit UI library with glassmorphism design language.
+Currently, two official plugins are available:
 
-> **Status**: Alpha (Photon) — Active development. Not suitable for production workloads.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
----
+## React Compiler
 
-## Components
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-### 🎨 LumiKit
-A reusable React UI component library featuring:
-- Glassmorphism design system
-- Dark/light mode support
-- Accessibility-first components
-- Theming and customization API
-- TypeScript-first development
+## Expanding the ESLint configuration
 
-*Opening for community contribution after Photon release.*
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-### ⚡ LumiSpark
-Internal UI testing and mock data generator:
-- Real-time component testing
-- Mock data generation with server-side persistence
-- Statistics mocking
-- Visual regression testing utilities
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-### 🔧 LumiForge *(Planned)*
-Code snippet generator for Telegram bot metric collection:
-- Multi-language support (JavaScript, Python, Go, PHP) + contributed solutions
-- Auto-generated tracking snippets
-- Configuration-driven code generation
-- OS-agnostic implementation
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
----
-
-## Roadmap
-
-| Version   | Codename | Focus Areas                                                            |
-|-----------|----------|------------------------------------------------------------------------|
-| 1.0-alpha | Photon   | Core UI, LumiKit foundation, LumiSpark, Full TypeScript implementation |
-| 2.0-beta  | Quantum  | LumiForge integration, live log viewer                                 |
-| 3.0       | Aurora   | Advanced analytics, predictive UI                                      |
-
----
-
-## Contributing
-
-**LumiKit** and **LumiForge** will open for community contributions after the Photon release. Watch this repository for updates.
-
-Other frontend contributions are currently closed during alpha development.
-
----
-
-## License
-
-Distributed under the MIT License. See [LICENSE](LICENSE) for details.
-
-```
-Copyright 2025-2026 Tsupko "quadrocorp" N.R.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
----
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-*Note: This repository contains the frontend components of the Lumi platform. The backend API is maintained in [`quadrocorp/LumiCore`](https://github.com/quadrocorp/LumiCore).*
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
