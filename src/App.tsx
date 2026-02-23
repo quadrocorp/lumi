@@ -1,37 +1,94 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './pages/ProtectedRoute';
-import Authentication from './pages/Authentication';
-import Dashboard from './pages/Dashboard';
+// Copyright 2025-2026 Tsupko "quadrocorp" N.R.
+// SPDX-License-Identifier: MIT
+
+import { useEffect, useMemo, useState } from "react";
+import { createApiClients, ErrorCode } from "./api";
+import { type CheckAuthResponse } from "./api/services/auth";
+import { AuthenticatedView } from "./components/auth/AuthenticatedView";
+import { Bot } from "./components/bot/SparkBot";
+import { sparkGenerateBot } from "./lib/spark/generators";
+import { AuthenticationForms } from "./pages/AuthenticationForms";
+import { type SparkBot } from "./types/spark";
 
 function App() {
-    return (
-        <Router>
-            <AuthProvider>
-                <Routes>
-                    {/* Public routes */}
-                    <Route path="/login" element={<Authentication login />} />
-                    <Route path="/register" element={<Authentication login={false} />} />
+	const { auth } = useMemo(() => createApiClients(), []);
+	const [checking, setChecking] = useState(true);
+	const [authenticated, setAuthenticated] = useState(false);
+	const [user, setUser] = useState<CheckAuthResponse["user"]>(null);
 
-                    {/* Protected routes */}
-                    <Route 
-                        path="/dashboard" 
-                        element={
-                            <ProtectedRoute>
-                                <Dashboard />
-                            </ProtectedRoute>
-                        } 
-                    />
+	// Demo data
+	const demoBot: SparkBot = sparkGenerateBot();
+	const demoBot2: SparkBot = sparkGenerateBot();
+	const demoBot3: SparkBot = sparkGenerateBot();
 
-                    {/* Redirect root */}
-                    <Route path="/" element={<Navigate to="/dashboard" replace />} />
+	useEffect(() => {
+		let mounted = true;
 
-                    {/* 404 */}
-                    <Route path="*" element={<div>404 - Not Found</div>} />
-                </Routes>
-            </AuthProvider>
-        </Router>
-    );
+		auth.checkAuth().then(({ data, error }) => {
+			if (!mounted) return;
+
+			if (error) {
+				if (error.code !== ErrorCode.UNAUTHORIZED) {
+					console.warn("Auth check error:", error);
+				}
+				setAuthenticated(false);
+				setUser(null);
+			} else if (data) {
+				setAuthenticated(data.authenticated);
+				setUser(data.authenticated ? data.user : null);
+			}
+			setChecking(false);
+		});
+
+		return () => {
+			mounted = false;
+		};
+	}, [auth]);
+
+	const handleLogout = () => {
+		setAuthenticated(false);
+		setUser(null);
+		window.location.reload();
+	};
+
+	if (checking)
+		return (
+			<div style={{ padding: "2rem" }}>Checking authentication...</div>
+		);
+
+	if (!authenticated) {
+		return (
+			<main
+				style={{
+					maxWidth: "400px",
+					margin: "2rem auto",
+					padding: "1rem",
+				}}
+			>
+				<h2 style={{ textAlign: "center" }}>Welcome to Lumi</h2>
+				<AuthenticationForms />
+			</main>
+		);
+	}
+
+	return (
+		<main style={{ padding: "1rem", maxWidth: "1200px", margin: "0 auto" }}>
+			<header
+				style={{
+					marginBottom: "2rem",
+					paddingBottom: "1rem",
+					borderBottom: "1px solid #333",
+				}}
+			>
+				<AuthenticatedView user={user} onLogout={handleLogout} />
+			</header>
+
+			<h1>Bot Dashboard</h1>
+			<Bot data={demoBot} />
+			<Bot data={demoBot2} />
+			<Bot data={demoBot3} />
+		</main>
+	);
 }
 
 export default App;

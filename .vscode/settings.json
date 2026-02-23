@@ -1,0 +1,28 @@
+{
+    "todo-tree.general.tags": [
+        "TODO",
+        "FIXME",
+        "BUG",
+        "HACK",
+        "NOTE",
+        "OPTIMIZE",
+        "SECTION"
+    ],
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {
+            "foreground": "#ffffff",
+            "background": "#2196f3",
+            "icon": "check"
+        },
+        "SECTION": {
+            "foreground": "#292929",
+            "background": "#f3d128",
+            "icon": "check"
+        },
+        "FIXME": {
+            "foreground": "#ffffff",
+            "background": "#f44336",
+            "icon": "alert"
+        }
+    }
+}
